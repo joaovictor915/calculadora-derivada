@@ -30,19 +30,19 @@
                 const logaritmicaRegex = /(?:log\(.+?\)|ln\(.*?\))/;
                 let derivada1;
 
-                if (exponencialRegex.test(expressao)) {
+                // if (exponencialRegex.test(expressao)) {
                     // derivada1 = calcularDerivadaManualExp(inputFunction)
-                } else if (multiplicativaRegex.test(expressao)) {
+                // } else if (multiplicativaRegex.test(expressao)) {
                     // derivada1 = calcularDerivadaManualProd(inputFunction);
-                } else if (quocienteRegex.test(expressao)) {
+                // } else if (quocienteRegex.test(expressao)) {
                     // derivada1 = calcularDerivadaManualQuoc(inputFunction);
-                } else if (polinomialRegex.test(expressao)) {
+                // } else if (polinomialRegex.test(expressao)) {
                     // derivada1 = calcularDerivadaManual(inputFunction);
-                } else if (trigonometricaRegex.test(expressao)) {
+                // } else if (trigonometricaRegex.test(expressao)) {
                     // derivada1 = calcularDerivadaManualTrig(inputFunction)
-                } else if (logaritmicaRegex.test(expressao)) {
+                // } else if (logaritmicaRegex.test(expressao)) {
                     // derivada1 = calcularDerivadaManualLog(inputFunction);
-                }
+                // }
                 // Converte a string da função para uma expressão utilizável pelo Math.js
                 const expr = math.parse(inputFunction);
 
