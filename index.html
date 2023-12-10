@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Derivada</title>
+</head>
+<body>
+    <h1>Calculadora de Derivada</h1>
+    
+    <label for="inputFunction">f(x):</label>
+    <input type="text" id="inputFunction" placeholder="Ex: x^2 + 3*x + 5">
+    
+    <button onclick="calcularDerivada()">Calcular Derivada</button>
+    
+    <p id="resultado"></p>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.1.0/math.js"></script>
+    <script>
+        function calcularDerivada() {
+            // Obtém a função do input
+            const inputFunction = document.getElementById('inputFunction').value;
+
+            try {
+                const exponencialRegex = /(?:[a-zA-Z]+\^|\be\^)\(.*?\)/;
+                const multiplicativaRegex = /(?:[a-zA-Z]+\*.*?|\(.*?\)\*(?:[a-zA-Z]+|\(.*?\)))/;
+                const quocienteRegex = /\(.*?\)\/\(.*?\)/;
+                const polinomialRegex = /(?:[a-zA-Z]+[\^|\*]\d+|\d+[a-zA-Z]+[\^|\*]\d+|\d+)/;
+                const trigonometricaRegex = /(?:sin|cos|tan)\(.*?\)/;
+                const logaritmicaRegex = /(?:log\(.+?\)|ln\(.*?\))/;
+                let derivada1;
+
+                if (exponencialRegex.test(expressao)) {
+                    derivada1 = calcularDerivadaManualExp(inputFunction)
+                } else if (multiplicativaRegex.test(expressao)) {
+                    derivada1 = calcularDerivadaManualProd(inputFunction);
+                } else if (quocienteRegex.test(expressao)) {
+                    derivada1 = calcularDerivadaManualQuoc(inputFunction);
+                } else if (polinomialRegex.test(expressao)) {
+                    derivada1 = calcularDerivadaManual(inputFunction);
+                } else if (trigonometricaRegex.test(expressao)) {
+                    derivada1 = calcularDerivadaManualTrig(inputFunction)
+                } else if (logaritmicaRegex.test(expressao)) {
+                    derivada1 = calcularDerivadaManualLog(inputFunction);
+                }
+                // Converte a string da função para uma expressão utilizável pelo Math.js
+                const expr = math.parse(inputFunction);
+
+                // Calcula a derivada da expressão
+                const derivada = math.derivative(expr, 'x');
+
+                // Exibe o resultado
+                document.getElementById('resultado').innerHTML = `f'(x): ${derivada.toString()}`;
+            } catch (error) {
+                // Exibe uma mensagem de erro se houver um problema ao analisar a expressão
+                document.getElementById('resultado').innerHTML = 'Erro ao calcular a derivada. Certifique-se de digitar uma expressão válida.';
+            }
+        }
+        function calcularDerivadaManual(expressao) {
+            // Substitui 'x' por '1' para calcular a derivada em relação a 'x'
+            const exprComX = expressao.replace(/x/g, '*1');
+
+            // Calcula a derivada usando eval
+            const derivada = eval('('+exprComX+')');
+
+            return derivada;
+        }
+
+        function calcularDerivadaManualExp(expressao) {
+            // Substitui 'x' por '1' para calcular a derivada em relação a 'x'
+            const exprComX = expressao.replace(/x/g, '*1');
+
+            // Calcula a derivada usando eval
+            const derivada = eval('('+exprComExponenciacao.replace(/([a-zA-Z]+)\(([^\)]+)\)/g, 'Math.$1($2)')+')');
+
+            return derivada;
+        }
+
+        function calcularDerivadaManualTrig(expressao) {
+            // Substitui 'x' por '1' para calcular a derivada em relação a 'x'
+            const exprComX = expressao.replace(/x/g, '*1');
+
+            // Substitui as funções trigonométricas e calcula a derivada usando eval
+            const exprComTrigonometria = exprComX
+                .replace(/sin/g, 'Math.sin')
+                .replace(/cos/g, 'Math.cos')
+                .replace(/tan/g, 'Math.tan');
+
+            const derivada = eval('('+exprComTrigonometria+')');
+
+            return derivada;
+        }
+
+        function calcularDerivadaManualLog(expressao) {
+            // Substitui 'x' por '1' para calcular a derivada em relação a 'x'
+            const exprComX = expressao.replace(/x/g, '*1');
+
+            // Substitui as funções logarítmicas e calcula a derivada usando eval
+            const exprComLogaritmo = exprComX
+                .replace(/ln/g, 'Math.log')
+                .replace(/log10/g, 'Math.log10');
+
+            const derivada = eval('('+exprComLogaritmo+')');
+
+            return derivada;
+        }
+
+        function calcularDerivadaManualProd(expressao) {
+            // Substitui 'x' por '1' para calcular a derivada em relação a 'x'
+            const exprComX = expressao.replace(/x/g, '*1');
+
+            // Substitui '^' por '**' para a exponenciação e calcula a derivada usando eval
+            const exprComExponenciacao = exprComX.replace(/\^/g, '**');
+
+            // Substitui '*' por '*' para a multiplicação e calcula a derivada usando eval
+            const exprComProduto = exprComExponenciacao.replace(/\*/g, '*');
+
+            // Aplica a regra do produto
+            const derivada = eval('('+exprComProduto.replace(/([a-zA-Z]+)\(([^\)]+)\)/g, 'Math.$1($2)')+')');
+
+            return derivada;
+        }
+
+        function calcularDerivadaManualQuoc(expressao) {
+            // Substitui 'x' por '1' para calcular a derivada em relação a 'x'
+            const exprComX = expressao.replace(/x/g, '1');
+
+            // Substitui '^' por '**' para a exponenciação e calcula a derivada usando eval
+            const exprComExponenciacao = exprComX.replace(/\^/g, '**');
+
+            // Substitui '*' por '*' para a multiplicação e '/' por '/' para a divisão
+            const exprComProdutoQuociente = exprComExponenciacao.replace(/\*/g, '*').replace(/\//g, '/');
+
+            // Aplica a regra do quociente
+            const derivada = eval('('+exprComProdutoQuociente.replace(/([a-zA-Z]+)\(([^\)]+)\)/g, 'Math.$1($2)')+')');
+
+            return derivada;
+        }
+    </script>
+</body>
+</html>
